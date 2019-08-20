@@ -19,10 +19,16 @@ describe("<Display />", () => {
         render(<Display />)
     })
 
-    it("renders unlocked/open as default values", () => {
+    it("displays unlocked/open as default values", () => {
         const { getByText } = render(<Display />)
-        getByText(/unlocked/i)
+        const unlockDisplay = getByText(/unlocked/i)
         getByText(/open/i)
+
+        // expect(unlockDisplay.className).toMatch(/red-led/i) // using jest
+        expect(unlockDisplay).toHaveClass('green-led')
+
+        // expect(queryByText(/open/i)).toBeTruthy() // don't need this extra layer b/c?
+        // expect(queryByText(/closed/i)).toBe(null) // check that closed is not in the page
     })
 
     // closed prop
@@ -47,20 +53,15 @@ describe("<Display />", () => {
         getByText(/unlocked/i)
     })
 
-    it("use red-led class when locked and open", () => {
-        // add data-testid to JSX
-        // const wrapper = render(<Display locked={true} closed={false} />)
-        // const lockedClass = wrapper.getByTestId('lockedClass')
-
-        // console.log("hereeee", lockedClass)
-        // expect(lockedClass.classList[1]).toBe('red-led')
-
-
-
+    it("use red-led class when locked or closed", () => {
+        const wrapper = render(<Display locked={true} closed={true} />)
+        const lockDisplay = wrapper.getByText(/locked/i)
+        expect(lockDisplay).toHaveClass('red-led')
     })
 
-    it("use red-led class when unlocked and closed", () => {
-        const wrapper = render(<Display locked={false} closed={true} />)
-
+    it("use green-led class when unlocked or closed", () => {
+        const wrapper = render(<Display locked={false} closed={false} />)
+        const unlockDisplay = wrapper.getByText(/unlocked/i)
+        expect(unlockDisplay).toHaveClass('green-led')
     })
 })
