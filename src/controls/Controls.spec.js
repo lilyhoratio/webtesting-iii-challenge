@@ -7,8 +7,9 @@
 
 
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import { render, cleanup, fireEvent } from '@testing-library/react'
 // import '@testing-library/react/cleanup-after-each' 
+import renderer from 'react-test-renderer'
 import Controls from './Controls'
 
 afterEach(cleanup)
@@ -16,5 +17,16 @@ afterEach(cleanup)
 describe("<Controls />", () => {
     it("renders without crashing", () => {
         render(<Controls />)
+    })
+
+    it("matches snapshot", () => {
+        // generate DOM tree
+        const tree = renderer.create(<Controls />)
+
+        expect(tree.toJSON()).toMatchSnapshot()
+    })
+
+    it("close gate button text changes on click", () => {
+        const wrapper = render(<Controls />)
     })
 })
